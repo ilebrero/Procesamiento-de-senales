@@ -1,0 +1,11 @@
+Sonidos individuales
+- https://www.audioblocks.com/royalty-free-audio/guitar+solo
+
+Ejemplo para fft 
+- https://www.dummies.com/programming/python/performing-a-fast-fourier-transform-fft-on-a-sound-file/
+
+Ejemplo para archivos en python
+- http://myinspirationinformation.com/uncategorized/audio-signals-in-python/
+
+Conversion de audios MP3 a WAV
+- ffmpeg -i input.mp3 output.wav 

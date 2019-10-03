@@ -2,7 +2,7 @@ library(tuneR)
 
 plotTimeAndFrecuencyDomains <- function(directory, samples)
 {
-	sndObj <- readWave(directory)
+	sndObj <- readMP3(directory)
 
 	# Uso el canal izquierdo
 	s1 <- head(sndObj@left, samples)
@@ -22,4 +22,4 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 	plot(Mod(fft.s1), type='l')
 }
 
-plotTimeAndFrecuencyDomains('audios/Bajo/Tonos puros/A_55.000.wav', 1000)
+plotTimeAndFrecuencyDomains('audios/Guitarra/Philarmonica/guitar_A2_very-long_forte_normal.mp3', 90000)

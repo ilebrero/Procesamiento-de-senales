@@ -1,5 +1,9 @@
 library(tuneR)
-library(seewave)
+library(seewave) 
+
+shifter <- function(x, n = 1) {
+  if (n == 0) x else c(tail(x, -n), head(x, n))
+}
 
 plotTimeAndFrecuencyDomains <- function(directory, samples)
 {
@@ -19,11 +23,15 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 
 	fft.s1 = fft(s1)
 
-	filtroDF = rep(1, samples)
-	# filtroDF [1500:(samples-500)] = 0
-	filtroDF [500:(samples-500)] = 0
+	fft.s1 = shifter(fft.s1, 1000)
 
-	fft.s1 = filtroDF * fft.s1 
+	
+
+	# filtroDF = rep(1, samples)
+	# filtroDF [10000:(samples-10000)] = 0
+	# # filtroDF [500:(samples-500)] = 0
+
+	# fft.s1 = filtroDF * fft.s1 
 
 	#####
 	# Ploteo el dominio del tiempo
@@ -35,8 +43,10 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 	plot(Mod(fft.s1), type='l')
 
 	# Save result
-	saveWav(retras, f=22050)
+	savewav(retras, f=44100)
 }
+
+
 
 
 plotTimeAndFrecuencyDomains('audios/Guitarra/Philarmonica/guitar_A2_very-long_forte_normal.mp3', 90000)

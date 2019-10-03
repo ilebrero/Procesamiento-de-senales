@@ -1,0 +1,7 @@
+Experimentos:
+	- Filtrar los agudos / graves
+	- Shiftear las frecuencias en 20000(on dio buenos resultados) y 1000 (parece un banjo)
+
+a futuro
+	- comparar el shifteo contra el pitch real (ver y buscar la misma frecuencia)
+	- 

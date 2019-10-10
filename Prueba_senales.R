@@ -9,21 +9,29 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 {
 	sndObj <- readMP3(directory)
 
+	samples <- length(sndObj@left)
 	# Uso el canal izquierdo
 	s1 <- head(sndObj@left, samples)
 
+	recorte <- 500
 	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
 	s1 <- s1 / 2^(sndObj@bit -1)
 
 	#### Para plotearlo
-	timeArray <- (0:(length(s1)-1)) / sndObj@samp.rate
+  timeArray <- (0:(length(s1)-1)) / sndObj@samp.rate
 	timeArray <- timeArray * samples #scale to milliseconds
 
+	deltaT <- 1/sndObj@samp.rate
+	deltaF <- 1/(samples*deltaT)
+	
+	freqTimeArray <- (0:(length(s1)-1)) * deltaF
+	
+	freqTimeArray <- head(freqTimeArray,recorte)
 	######
 
 	fft.s1 = fft(s1)
 
-	fft.s1 = shifter(fft.s1, 1000)
+	#fft.s1 = shifter(fft.s1, 1000)
 
 	
 
@@ -40,13 +48,14 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 
 	# Ploteo el dominio de la frecuencia
 	# fft.s1 = fft(s1)
-	plot(Mod(fft.s1), type='l')
+	plot(freqTimeArray,Mod(head(fft.s1,recorte)), type='l')
 
 	# Save result
-	savewav(retras, f=44100)
+	savewav(retras, f=sndObj@samp.rate)
 }
 
 
 
 
-plotTimeAndFrecuencyDomains('audios/Guitarra/Philarmonica/guitar_A2_very-long_forte_normal.mp3', 90000)
+plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 90000)
+

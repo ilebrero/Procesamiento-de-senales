@@ -5,12 +5,14 @@ shifter <- function(x, n = 1) {
   if (n == 0) x else c(tail(x, -n), head(x, n))
 }
 
-plotTimeAndFrecuencyDomains <- function(directory, samples)
+plotTimeAndFrecuencyDomains <- function(directory, samples, offset, frecOffset)
 {
 	sndObj <- readMP3(directory)
 
 	# Uso el canal izquierdo
 	s1 <- head(sndObj@left, samples)
+	s1 <- tail(s1, offset)
+	# s1 <- tail(s1
 
 	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
 	s1 <- s1 / 2^(sndObj@bit -1)
@@ -23,7 +25,7 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 
 	fft.s1 = fft(s1)
 
-	fft.s1 = shifter(fft.s1, 1000)
+	# fft.s1 = shifter(fft.s1, 1000)
 
 	
 
@@ -40,7 +42,8 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 
 	# Ploteo el dominio de la frecuencia
 	# fft.s1 = fft(s1)
-	plot(Mod(fft.s1), type='l')
+	# plot(log(Mod(head(fft.s1, frecOffset))), type='l')
+	plot(Mod(head(fft.s1, frecOffset)), type='l')
 
 	# Save result
 	savewav(retras, f=44100)
@@ -49,4 +52,17 @@ plotTimeAndFrecuencyDomains <- function(directory, samples)
 
 
 
-plotTimeAndFrecuencyDomains('audios/Guitarra/Philarmonica/guitar_A2_very-long_forte_normal.mp3', 90000)
+# Experimento 1
+plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A2_long_pianissimo_normal.mp3', 30000, 30000, 2500)
+
+# Expe 2
+# plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 30000, 30000, 200)
+
+# expe 3
+# plotTimeAndFrecuencyDomains('audios/violin/violin_A4_05_forte_arco-normal.mp3', 30000, 200, 1200)
+# Mirar despues: 
+#	- Ver el tiempo de los ciclos | podemos ver 1/blabuscar la cuenta) que deberia darnos la frecuencia
+#   - Ver que por nota el periodo deberia ser el mismo
+
+# 
+# plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 30000, 15000, 1000)

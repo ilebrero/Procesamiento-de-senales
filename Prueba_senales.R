@@ -5,17 +5,16 @@ shifter <- function(x, n = 1) {
   if (n == 0) x else c(tail(x, -n), head(x, n))
 }
 
-plotTimeAndFrecuencyDomains <- function(directory, samples, offset, frecOffset)
+plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
 {
 	sndObj <- readMP3(directory)
 
 	samples <- length(sndObj@left)
+	print(samples)
 	# Uso el canal izquierdo
 	s1 <- head(sndObj@left, samples)
-	s1 <- tail(s1, offset)
-	# s1 <- tail(s1
 
-	recorte <- 500
+	recorte <- 10000
 	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
 	s1 <- s1 / 2^(sndObj@bit -1)
 
@@ -34,8 +33,20 @@ plotTimeAndFrecuencyDomains <- function(directory, samples, offset, frecOffset)
 	fft.s1 = fft(s1)
 
 	#fft.s1 = shifter(fft.s1, 1000)
-
 	
+	largoMitad <- length(fft.s1)/4
+	print("asdasds")
+	print(posFundamental)
+	print(length(head(Mod(fft.s1),largoMitad)))
+	print(length(tail(head(Mod(fft.s1),largoMitad),largoMitad-(posFundamental*1.5))))
+	
+  
+	sumaEnergias <- sum(tail(head(Mod(fft.s1),posFundamental*1.25),posFundamental))
+  sumaEnergiasArmonicos <- sum(tail(head(Mod(fft.s1),largoMitad),largoMitad-(posFundamental*1.25)))
+	
+	energiaTotal <- sumaEnergiasArmonicos / sumaEnergias * 100
+	
+	print(energiaTotal)
 
 	# filtroDF = rep(1, samples)
 	# filtroDF [10000:(samples-10000)] = 0
@@ -46,10 +57,12 @@ plotTimeAndFrecuencyDomains <- function(directory, samples, offset, frecOffset)
 	#####
 	# Ploteo el dominio del tiempo
 	retras = Re(fft(fft.s1, inverse=TRUE) / samples)
-	plot(timeArray, retras, type='l', col='black', xlab='Time (ms)', ylab='Amplitude')
+	#plot(timeArray, retras, type='l', col='black', xlab='Time (ms)', ylab='Amplitude')
 
 	# Ploteo el dominio de la frecuencia
 	# fft.s1 = fft(s1)
+  # TODO: Armar un vector / en la posicion 440 tenga la energia de la frecuencia 440
+	      # Lo vamos a usar para calcular la energia de toda la frecuencia y comparar la energia de la fundamental vs los armonicos.
 	plot(freqTimeArray,Mod(head(fft.s1,recorte)), type='l')
 
 	# Save result
@@ -59,21 +72,6 @@ plotTimeAndFrecuencyDomains <- function(directory, samples, offset, frecOffset)
 
 
 
-# Experimento 1
-plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A2_long_pianissimo_normal.mp3', 30000, 30000, 2500)
-
-# Expe 2
-# plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 30000, 30000, 200)
-
-# expe 3
-# plotTimeAndFrecuencyDomains('audios/violin/violin_A4_05_forte_arco-normal.mp3', 30000, 200, 1200)
-# Mirar despues: 
-#	- Ver el tiempo de los ciclos | podemos ver 1/blabuscar la cuenta) que deberia darnos la frecuencia
-#   - Ver que por nota el periodo deberia ser el mismo
-
-# 
-# plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 30000, 15000, 1000)
-
-# Experimento 5
-plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 90000, 90000, 2500)
+plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 90000, 440)
+plotTimeAndFrecuencyDomains('audios/violin/violin_A4_025_mezzo-forte_arco-normal.mp3', 90000, 440)
 

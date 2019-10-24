@@ -5,54 +5,85 @@ shifter <- function(x, n = 1) {
   if (n == 0) x else c(tail(x, -n), head(x, n))
 }
 
-plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
+obtenerSamples <- function(audioFile, samples)
 {
-	sndObj <- readMP3(directory)
-
-	samples <- length(sndObj@left)
+	# Levantar el archivo y sacar la data de adentro
+	samples <- length(audioFile@left)
 	print(samples)
 	# Uso el canal izquierdo
-	s1 <- head(sndObj@left, samples)
+	s1 <- head(audioFile@left, samples)
 
-	recorte <- 10000
-	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
-	s1 <- s1 / 2^(sndObj@bit -1)
+	s1
+}
 
-	#### Para plotearlo
-  timeArray <- (0:(length(s1)-1)) / sndObj@samp.rate
-	timeArray <- timeArray * samples #scale to milliseconds
-
-	deltaT <- 1/sndObj@samp.rate
+obtenerDominioFrecuencias <- function(audioFile, s1, samples, recorte)
+{
+	deltaT <- 1/audioFile@samp.rate
 	deltaF <- 1/(samples*deltaT)
 	
 	freqTimeArray <- (0:(length(s1)-1)) * deltaF
-	
 	freqTimeArray <- head(freqTimeArray,recorte)
-	######
 
-	fft.s1 = fft(s1)
+	freqTimeArray
+}
 
-	#fft.s1 = shifter(fft.s1, 1000)
-	
-	largoMitad <- length(fft.s1)/4
+obtenerExperimento1 <- function(fft, posFundamental)
+{
+	# cortamos la series para serpara el ruido del final
+	largoMitad <- length(fft)/4
+
+	# Debug
 	print("asdasds")
 	print(posFundamental)
-	print(length(head(Mod(fft.s1),largoMitad)))
-	print(length(tail(head(Mod(fft.s1),largoMitad),largoMitad-(posFundamental*1.5))))
+	print(length(head(Mod(fft),largoMitad)))
+	print(length(tail(head(Mod(fft),largoMitad),largoMitad-(posFundamental*1.5))))
+
+  	### Sumamos las cosas que ya conocemos
+	sumaEnergias <- sum(tail(head(Mod(fft),posFundamental*1.25),posFundamental))
+ 	sumaEnergiasArmonicos <- sum(tail(head(Mod(fft),largoMitad),largoMitad-(posFundamental*1.25)))
 	
-  
-	sumaEnergias <- sum(tail(head(Mod(fft.s1),posFundamental*1.25),posFundamental))
-  sumaEnergiasArmonicos <- sum(tail(head(Mod(fft.s1),largoMitad),largoMitad-(posFundamental*1.25)))
-	
+
 	energiaTotal <- sumaEnergiasArmonicos / sumaEnergias * 100
 	
 	print(energiaTotal)
+}
+
+plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
+{
+	audioFile <- readMP3(directory)
+
+	s1 <- obtenerSamples(audioFile, samples)
+	# Levantar el archivo y sacar la data de adentro
+
+	# TODO: Ponerlo como param
+	recorte <- 10000
+	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
+	s1 <- s1 / 2^(audioFile@bit -1)
+
+
+	#### Armamos los dominios
+  	timeArray <- (0:(length(s1)-1)) / audioFile@samp.rate
+	timeArray <- timeArray * samples #scale to milliseconds
+
+	### Obtener para las frecuencias
+	freqTimeArray <-obtenerDominioFrecuencias(audioFile, s1, samples, recorte)
+
+	# Calculamos la transformada de fourier
+	fft.s1 = fft(s1)
+
+	# Experimento shifteando los valores
+	#fft.s1 = shifter(fft.s1, 1000)
+	
+	### Experimento1: Sumar los harmonicos y ver si tinenen relacion con la fundamental
+	obtenerExperimento1 <- obtenerExperimento1(fft.s1, posFundamental)
 
 	# filtroDF = rep(1, samples)
 	# filtroDF [10000:(samples-10000)] = 0
 	# # filtroDF [500:(samples-500)] = 0
 
 	# fft.s1 = filtroDF * fft.s1 
+
+		#### Ploteos y otros
 
 	#####
 	# Ploteo el dominio del tiempo
@@ -66,7 +97,7 @@ plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
 	plot(freqTimeArray,Mod(head(fft.s1,recorte)), type='l')
 
 	# Save result
-	savewav(retras, f=sndObj@samp.rate)
+	savewav(retras, f=audioFile@samp.rate)
 }
 
 

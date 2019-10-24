@@ -9,20 +9,30 @@ obtenerSamples <- function(audioFile, samples)
 {
 	# Levantar el archivo y sacar la data de adentro
 	samples <- length(audioFile@left)
-	print(samples)
+	
 	# Uso el canal izquierdo
 	s1 <- head(audioFile@left, samples)
+
+	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
+	s1 <- s1 / 2^(audioFile@bit -1)
+
 
 	s1
 }
 
+
+obtenerDominoTiempo <- function(audioFile, s1, samples)
+{
+  	timeArray <- (0:(length(s1)-1)) / audioFile@samp.rate
+	timeArray <- timeArray * samples #scale to milliseconds
+
+	timeArray
+}
+
 obtenerDominioFrecuencias <- function(audioFile, s1, samples)
 {
-	deltaT <- 1/audioFile@samp.rate
-	deltaF <- 1/(samples*deltaT)
-	
+	deltaF <- audioFile@samp.rate / samples
 	freqTimeArray <- (0:(length(s1)-1)) * deltaF
-
 	freqTimeArray
 }
 
@@ -38,6 +48,12 @@ filtrarBanda <- function(fft, midPoint, delta)
 	)
 }
 
+
+## Podemos buscar la frecuencia fundamental de un audio para predecir que nota es (o que instrumento?)
+obtenerExperimento2 <- function()
+{
+	# TODO
+} 
 
 obtenerExperimento1 <- function(fft, posFundamental)
 {
@@ -65,22 +81,14 @@ obtenerExperimento1 <- function(fft, posFundamental)
 	print(energiaTotal)
 }
 
-plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
+plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental, recorte)
 {
 	audioFile <- readMP3(directory)
 
 	s1 <- obtenerSamples(audioFile, samples)
-	# Levantar el archivo y sacar la data de adentro
-
-	# TODO: Ponerlo como param
-	recorte <- 20000
-	# Adaptando el tamano de los valores para que queden entre (-1, 1) (o es cerrado?)
-	s1 <- s1 / 2^(audioFile@bit -1)
-
 
 	#### Armamos los dominios
-  	timeArray <- (0:(length(s1)-1)) / audioFile@samp.rate
-	timeArray <- timeArray * samples #scale to milliseconds
+	timeArray <- obtenerDominoTiempo(audioFile, s1, samples)
 
 	### Obtener para las frecuencias
 	freqTimeArray <-obtenerDominioFrecuencias(audioFile, s1, samples)
@@ -105,7 +113,7 @@ plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
 	#####
 	# Ploteo el dominio del tiempo
 	retras = Re(fft(fft.s1, inverse=TRUE) / samples)
-	plot(head(timeArray, recorte), head(retras, recorte), type='l', col='black', xlab='Time (ms)', ylab='Amplitude')
+	plot(head(timeArray, recorte), head(retras, recorte), type='l', col='black', xlab='Time', ylab='Amplitude')
 
 	# Ploteo el dominio de la frecuencia
 	# fft.s1 = fft(s1)
@@ -120,6 +128,7 @@ plotTimeAndFrecuencyDomains <- function(directory, samples, posFundamental)
 
 
 
-plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 90000, 440)
-plotTimeAndFrecuencyDomains('audios/violin/violin_A4_025_mezzo-forte_arco-normal.mp3', 90000, 440)
+# plotTimeAndFrecuencyDomains('audios/trumpet/trumpet_A4_05_forte_normal.mp3', 90000, 440, 100000)
+plotTimeAndFrecuencyDomains('audios/flute/flute_A5_05_pianissimo_normal.mp3', 90000, 440, 100000)
+# plotTimeAndFrecuencyDomains('audios/violin/violin_A4_025_mezzo-forte_arco-normal.mp3', 90000, 440, 100000)
 

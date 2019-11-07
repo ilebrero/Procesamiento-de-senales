@@ -5,7 +5,7 @@ import numpy as np
 # Visualize an STFT power spectrum
 
 import matplotlib.pyplot as plt
-y, sr = librosa.load("/audios/Violin/violin_A4_025_piano_arco-normal.mp3")
+y, sr = librosa.load("../audios/Violin/violin_A4_025_piano_arco-normal.mp3")
 plt.figure(figsize=(12, 8))
 
 D = librosa.amplitude_to_db(np.abs(librosa.stft(y)), ref=np.max)

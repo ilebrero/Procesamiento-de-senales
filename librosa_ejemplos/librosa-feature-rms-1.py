@@ -2,7 +2,7 @@ import librosa
 import librosa.display
 import numpy as np
 
-y, sr = librosa.load("/audios/Violin/violin_A4_025_piano_arco-normal.mp3")
+y, sr = librosa.load("../audios/Violin/violin_A4_025_piano_arco-normal.mp3")
 librosa.feature.rms(y=y)
 # array([[ 0.   ,  0.056, ...,  0.   ,  0.   ]], dtype=float32)
 

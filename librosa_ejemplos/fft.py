@@ -3,7 +3,7 @@ import librosa
 import librosa.display
 import matplotlib.pyplot as plt
 
-filename = '/audios/Violin/violin_A4_025_piano_arco-normal.mp3'
+filename = '../audios/Violin/violin_A4_025_piano_arco-normal.mp3'
 y, sr = librosa.load(filename)
 # trim silent edges
 whale_song, _ = librosa.effects.trim(y)

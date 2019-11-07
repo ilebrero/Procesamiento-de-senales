@@ -4,7 +4,7 @@ import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
 
-y, sr = librosa.load("/audios/Violin/violin_A4_025_piano_arco-normal.mp3", duration=10)
+y, sr = librosa.load("../audios/Violin/violin_A4_025_piano_arco-normal.mp3", duration=10)
 plt.figure()
 plt.subplot(3, 1, 1)
 librosa.display.waveplot(y, sr=sr)

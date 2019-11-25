@@ -6,30 +6,33 @@ from os.path import isfile, join, splitext, getsize
 
 from numpy import linalg
 
-def count(files):
-    count = dict()
+def concatenate(a, b):
+    if a.size == 0: return b
+    return np.concatenate((a, b))
 
-    for file in files:
-        file_size = file[1]
+def containsAll(substrings, string):
+    res = True
+    for s in substrings:
+        res = res and (s in string)
+    return res
 
-        if file_size in count.keys():
-            count[file_size] = count[file_size] + 1
-        else:
-            count[file_size] = 1
 
-    return count
+def containsAny(substrings, string):
+    res = False
+    for s in substrings:
+        res = res or (s in string)
+    return res
 
-def first_elements(lst):
-    check = lst[0][1]
-    elems = []
+def getConcat(arr):
+    res = ""
+    for a in arr:
+        res = res + "_" + a
+    return res
 
-    for elem in lst:
-        if elem[1] == check:
-            elems.append(elem[0])
-        else:
-            break
+def generate_stacked_new_row(a, b):
+    if a.size == 0: return b # Caso especial si a no tiene elems todavia
+    return np.vstack( (a, b) )
 
-    return elems
 
 def filter_valid_names(names, substrings, not_substrings):
 	res = []
@@ -51,55 +54,11 @@ def getFiles(directory, substrings, not_substrings):
 
     all_paths = filter_valid_names(all_paths, substrings, not_substrings)
 
-    # filepaths = []
-
-    # for i in range(len(all_paths)):
-    #     filepaths.append(
-    #     	(
-    #     		all_paths[i], 
-    #     		getsize(
-    #     			join(
-    #     				directory, 
-    #     				all_paths[i]
-    #     				)
-    #     			)
-    #     		)
-    #     	)
-
-    # counts = count(filepaths)
-    # filepaths = sorted(filepaths, key=lambda x: counts[x[1]], reverse=True)
-
-    # Me quedo con los que mas aparecen
-    # return first_elements(filepaths)
     return all_paths
-
-def containsAll(substrings, string):
-    res = True
-    for s in substrings:
-        res = res and (s in string)
-    return res
-
-
-def containsAny(substrings, string):
-    res = False
-    for s in substrings:
-        res = res or (s in string)
-    return res
-
-def getConcat(arr):
-    res = ""
-    for a in arr:
-        res = res + "_" + a
-    return res
 
 def get_audio_features(file_path):
     y, sr = librosa.load(file_path)
     return generate_audio_features(y, sr)
-
-
-def generate_stacked_new_row(a, b):
-    if a.size == 0: return b # Caso especial si a no tiene elems todavia
-    return np.vstack( (a, b) )
 
 def generate_instrument_dataset(directory, substrings, not_substrings, instrument):
     instrument_dataset = np.array([])
@@ -115,10 +74,6 @@ def generate_instrument_dataset(directory, substrings, not_substrings, instrumen
         )
             
     return instrument_dataset
-
-def concatenate(a, b):
-    if a.size == 0: return b
-    return np.concatenate((a, b))
 
 def generate_dataset(instruments):
     dataset = np.array([])
@@ -139,7 +94,6 @@ def generate_dataset(instruments):
 	# scomps, sacts = librosa.decompose.decompose(dataset, transformer=T, sort=True)    
 
     # Generamos la descomposicion de Non-negative matrix
-    # Nota: transponemos el dataset para tener los features como filas (ver paper)
     # dataset = Componentes * Activaciones
     comps, acts = librosa.decompose.decompose(dataset, n_components=len(instruments))
     

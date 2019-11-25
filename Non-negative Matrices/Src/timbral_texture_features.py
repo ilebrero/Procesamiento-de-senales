@@ -110,15 +110,8 @@ def generate_spectral_rolloff_feature_vector(signal, sampling_rate):
   return feature_vector
 
 
-# Nota: representamos los vectores de features como columnas
+# Nota: transponemos los features para tenerlos como columnas (ver paper)
 def generate_audio_features(signal, sampling_rate):
-  # spectral_rolloff = librosa.feature.spectral_rolloff(signal, sampling_rate)
-  # spectral_rolloff = np.reshape(
-  #   spectral_rolloff,
-  #   spectral_rolloff.size, 
-  #   order='F'
-  # )
-
   return np.array([
     # Primeros features
     np.array(librosa.feature.zero_crossing_rate(signal)[0]),

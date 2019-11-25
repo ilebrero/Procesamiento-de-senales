@@ -114,11 +114,12 @@ def generate_spectral_rolloff_feature_vector(signal, sampling_rate):
 def generate_audio_features(signal, sampling_rate):
   return np.array([
     # Primeros features
-    np.array(librosa.feature.zero_crossing_rate(signal)[0]),
+    librosa.feature.zero_crossing_rate(signal)[0],
     # np.array(generate_delta_spectrum_feature_vector(signal, sampling_rate)),
-    np.array(librosa.feature.spectral_rolloff(signal, sampling_rate)[0]),
+    librosa.feature.spectral_rolloff(signal, sampling_rate)[0],
 
     # Segundos features
-    np.array(librosa.feature.spectral_centroid(y=signal, sr=sampling_rate)[0]),
-    np.array(librosa.feature.spectral_flatness(y=signal)[0]),
-  ]).T
+    librosa.feature.spectral_centroid(y=signal, sr=sampling_rate)[0],
+    librosa.feature.spectral_flatness(y=signal)[0]
+#     librosa.feature.chroma_cqt(y=y, sr=sr)[0]
+  ])

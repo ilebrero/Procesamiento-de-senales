@@ -1,4 +1,5 @@
 import sklearn.decomposition
+from  sklearn.decomposition import NMF
 import librosa
 
 from os import listdir, mkdir
@@ -75,10 +76,20 @@ def generate_instrument_dataset(directory, substrings, not_substrings, instrumen
             
     return instrument_dataset
 
+
 def generate_dataset(instruments):
     dataset = np.array([])
+    labels  = [] # El label de la i-esima columna
 
     for directory, substrings, not_substrings, instrument in instruments:
+        instrument_dataset = generate_instrument_dataset(
+                directory, 
+                substrings, 
+                not_substrings, 
+                instrument
+            )
+        
+        # armo el dataset nuevo
         dataset = concatenate(
             dataset, 
             generate_instrument_dataset(
@@ -88,27 +99,35 @@ def generate_dataset(instruments):
                 instrument
             )
         )
+        
+        # armo los labels, las cols representan los vectores de features
+        for i in range(instrument_dataset.shape[0]):
+            labels.append(instrument)
 
+    # Para el dataset uso los vectores de features como columnas
+    dataset = dataset.T
+    
 	# Opcional
-	# T = sklearn.decomposition.MiniBatchDictionaryLearning(n_components=1)
-	# scomps, sacts = librosa.decompose.decompose(dataset, transformer=T, sort=True)    
+    T = sklearn.decomposition.MiniBatchDictionaryLearning(n_components=5)
+# 	 scomps, sacts = librosa.decompose.decompose(dataset, transformer=T, sort=True)    
 
     # Generamos la descomposicion de Non-negative matrix
-    # dataset = Componentes * Activaciones
-    comps, acts = librosa.decompose.decompose(dataset, n_components=len(instruments))
+    # dataset = W * H
+    W, H = librosa.decompose.decompose(dataset, transformer=T)
+#     model = NMF(n_components=len(instruments), init='random', random_state=0)
+#     W = model.fit_transform(dataset.T)
+#     H = model.components_
     
-    # Calculamos la inversa de Moore-Penrose para sacar la Activacion de los samples de prueba
-    # Asi queda dataset * Componentes^(-1) = Activaviones
-    comps_inv = linalg.pinv(comps)
+    
+    # Calculamos la inversa de Moore-Penrose
+    # Asi queda dataset * W^(-1) = H
+    W_inv = linalg.pinv(W)
     
     print("shape de dataset")
     print(dataset.shape)
     print("shape de W")
-    print(comps.shape)
-    print(comps_inv.shape)
-    print(acts.shape)
-    
+    print(W.shape)
+    print(W_inv.shape)
+    print(H.shape)
 
-    return np.array(comps_inv), np.array(acts)
-
-    # [[7.82712577e-03 1.62039602e+02 8.89513943e+01 5.19766760e-03]] - Violin
+    return np.array(W_inv), np.array(H), labels

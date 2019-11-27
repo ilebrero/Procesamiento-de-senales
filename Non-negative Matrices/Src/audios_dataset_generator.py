@@ -36,13 +36,13 @@ def generate_stacked_new_row(a, b):
 
 
 def filter_valid_names(names, substrings, not_substrings):
-	res = []
+    res = []
 
-	for name in names:
-		if containsAll(substrings, name) and not containsAny(not_substrings, name):
-			res.append(name)
+    for name in names:
+        if containsAll(substrings, name) and not containsAny(not_substrings, name):
+            res.append(name)
 
-	return res
+    return res
 
 def getFiles(directory, substrings, not_substrings):
     # Pruebo levantar por size
@@ -58,7 +58,7 @@ def getFiles(directory, substrings, not_substrings):
     return all_paths
 
 def get_audio_features(file_path):
-    y, sr = librosa.load(file_path)
+    y, sr = librosa.load(file_path, sr=44100)
     return generate_audio_features(y, sr)
 
 def generate_instrument_dataset(directory, substrings, not_substrings, instrument):
@@ -82,6 +82,7 @@ def generate_dataset(instruments):
     labels  = [] # El label de la i-esima columna
 
     for directory, substrings, not_substrings, instrument in instruments:
+        print("Voy con el instrumento: " + instrument)
         instrument_dataset = generate_instrument_dataset(
                 directory, 
                 substrings, 
@@ -92,12 +93,7 @@ def generate_dataset(instruments):
         # armo el dataset nuevo
         dataset = concatenate(
             dataset, 
-            generate_instrument_dataset(
-                directory, 
-                substrings, 
-                not_substrings, 
-                instrument
-            )
+            instrument_dataset
         )
         
         # armo los labels, las cols representan los vectores de features
@@ -107,27 +103,14 @@ def generate_dataset(instruments):
     # Para el dataset uso los vectores de features como columnas
     dataset = dataset.T
     
-	# Opcional
-    T = sklearn.decomposition.MiniBatchDictionaryLearning(n_components=5)
-# 	 scomps, sacts = librosa.decompose.decompose(dataset, transformer=T, sort=True)    
-
     # Generamos la descomposicion de Non-negative matrix
     # dataset = W * H
-    W, H = librosa.decompose.decompose(dataset, transformer=T)
-#     model = NMF(n_components=len(instruments), init='random', random_state=0)
-#     W = model.fit_transform(dataset.T)
-#     H = model.components_
-    
+    model = NMF(n_components=len(instruments), init='random', random_state=0)
+    W = model.fit_transform(dataset)
+    H = model.components_
     
     # Calculamos la inversa de Moore-Penrose
-    # Asi queda dataset * W^(-1) = H
+    # Asi queda generado el modelo dataset * W^(-1) = H
     W_inv = linalg.pinv(W)
-    
-    print("shape de dataset")
-    print(dataset.shape)
-    print("shape de W")
-    print(W.shape)
-    print(W_inv.shape)
-    print(H.shape)
 
     return np.array(W_inv), np.array(H), labels

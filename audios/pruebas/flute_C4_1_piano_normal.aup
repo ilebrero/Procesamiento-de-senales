@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="flute_C4_1_piano_normal_data" version="1.3.0" audacityversion="2.2.1" sel0="0.0489952153" sel1="0.0489952153" vpos="176" h="0.0000000000" zoom="489.8437500000" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags>
+		<tag name="Encoded by" value="iTunes v4.2"/>
+		<tag name="TITLE" value="553 1"/>
+		<tag name="COMMENTS" value=" 0000000B 00000000 0000002E 00000000 0000016D 00000000 00000759 00000000 0000016D 00000000"/>
+	</tags>
+	<wavetrack name="violin_A4_1_mezzo-piano_arco-normal" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="6.309574" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="56448">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000866.au" len="56448" min="-0.057656" max="0.102329" rms="0.018231"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="flute_D4_1_forte_normal" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="3.981072" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="54144">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000c21.au" len="54144" min="-0.039478" max="0.057369" rms="0.010941"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="1" rate="22050" gain="11.220184" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="28160">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000b57.au" len="28160" min="-0.087309" max="0.101209" rms="0.015737"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="" channel="2" linked="0" mute="1" solo="0" height="150" minimized="0" isSelected="0" rate="22050" gain="14.125376" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="28160">
+				<waveblock start="0">
+					<simpleblockfile filename="e000076e.au" len="28160" min="-0.025501" max="0.045443" rms="0.007223"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="" channel="2" linked="0" mute="1" solo="0" height="198" minimized="0" isSelected="0" rate="22050" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="28160">
+				<waveblock start="0">
+					<simpleblockfile filename="e000009f.au" len="28160" min="-0.085155" max="0.106171" rms="0.013154"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="flute_D4_violin_A4" channel="2" linked="0" mute="0" solo="1" height="150" minimized="0" isSelected="0" rate="44100" gain="5.011872" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="56448">
+				<waveblock start="0">
+					<simpleblockfile filename="e000060c.au" len="56448" min="-0.426392" max="0.666962" rms="0.123037"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

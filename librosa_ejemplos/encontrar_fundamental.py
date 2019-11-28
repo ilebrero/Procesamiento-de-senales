@@ -1,3 +1,8 @@
+from scipy import signal as sg
+import librosa
+import numpy as np
+
+
 #function to find the fundamental pitch frequency counting zeroes
 #From https://www.kaggle.com/asparago/simple-pitch-detector
 def find_fundamental(signal, sampling_ratio):
@@ -17,3 +22,12 @@ def find_fundamental(signal, sampling_ratio):
   n = [i for i in range(0,len(diff)) if diff[i]>0][0]
   peak = np.argmax(corr[n:]) + n
   return rate/peak
+
+
+y, sr = librosa.load("../audios/test.wav")
+a = find_fundamental(y, sr)
+print(a)
+# A3 -> 11.516698
+# A4 -> 1464
+# A3 -> 1193
+# A3 forte -> 504

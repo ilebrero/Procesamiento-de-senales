@@ -1,0 +1,27 @@
+\section{Introduction}
+
+\subsection{Problema General}
+
+El análisis de instrumentos musicales es un problema clásico en el campo de la Recuperación de Información Musical (MIR, Music Information Retrieval) que a su vez representa un desafío de gran complejidad e interés en el ámbito. La clasificación de muestras de instrumentos según su timbre es un campo de investigación todavía abierto debido a esta complejidad. La música es una actividad artística esencial de la sociedad humana, diversos estudios ya trataron la clasificación de los instrumentos en jerarquías basadas en los materiales de fabricación de los instrumentos, así como en su fuente de sonido y su método de excitación, estos derivaron en las familias clásicas de instrumentos que se estudian desde hace casi dos siglos: instrumentos de cuerda (percutida, frotada con arco), de viento (maderas, metales), percusión, etc.
+
+Gracias a los avances tecnológicos este análisis hoy se puede hacer sobre grabaciones digitales, estudiando la representación del sonido en distintos dominios facilitados por la transformada de Fourier (del tiempo, o de la frecuencia). Este acercamiento está basado directamente en el contenido que se puede extraer de las características del mismo audio del instrumento. Si la distinción hecha sobre materiales de construcción es una de alto nivel, podemos considerar este análisis como uno de bajo nivel. El problema que estaríamos intentando resolver entonces, es encontrar una correlación entre descriptores de bajo y alto nivel que permita identificar una muestra de un instrumento o por lo menos acercarlo a su familia según su descriptor de alto nivel.
+        
+\subsection{¿Qué hacemos en este trabajo?}
+
+En la seccion 2 presentamos un breve análisis sobre audios de instrumentos aislados descargados del MIS dataset desarrollado en la Universidad de IOWA$^{[1]}$ para tratar de caracterizarlos, basándonos en una t\'ecnica ya conocida (Benetos, Kotti \& Kotropoulos, 2006)$^{[2]}$ armamos un modelo de ML para clasificar audios de acuerdo al instrumento que se toca, es útil aclarar que en esta parte solo usamos audios aislados tanto para entrenar como para predecir. Podemos decir que la caracterización de los instrumentos en esta parte queda dada por los features usados y el modelo entrenado.
+
+Finalmente, en la secci\'on 3 experimentamos con la \textit{factorizacion no negativa de matrices} para descomponer un audio y tratar de analizar si es posible usar esto para aislar instrumentos. 
+
+Las herramientas utilizadas en el trabajo fueron todas open source como Python, librosa \footnote{Librer\'ia open source sobre manipulaci\'on de sonido en Python https://librosa.github.io/librosa/ }, Jupyter Notebook, sklearn de Scipy.
+
+Ademas, dentro de un repositorio es pueden encontrar los sources y datasets necesarios, en particular \href{https://github.com/ilebrero/Procesamiento-de-senales/tree/master/Non-negative-matrices/Caracterizacion%20de%20Instrumentos}{aqui} para la seccion 2 y \href{https://github.com/ilebrero/Procesamiento-de-senales/tree/master/Non-negative-matrices/Separacion_de_audios}{aqui} para la seccion 3. 
+
+En el primero se pueden encontrar:
+    
+\begin{itemize}
+    \item \textit{Src:} Contiene los archivos en python para correr el codigo.
+    \item \textit{Audios:} Contiene los audios para generar el dataset de entrenamiento y de prueba.
+    \item \textit{Notebooks:} Contiene los jupyter notebooks con los mismos experimentos que en este trabajo.
+\end{itemize}
+
+En el segundo simplemente la carpeta \textit{Notebooks} con la notebook y los audios necesarios para correr el experimento, notar que los archivos resultantes tambien se guardan en ese directorio.

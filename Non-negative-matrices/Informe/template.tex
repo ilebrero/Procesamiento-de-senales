@@ -1,0 +1,193 @@
+\documentclass[13pt]{article}
+
+\usepackage{arxiv}
+
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+
+\usepackage{subcaption} 
+
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.2}
+
+\title{An\'alisis y Caracterizaci\'on de instrumentos Musicales usando la transformada de fourier.}
+
+
+\author{
+  Ignacio Manuel Lebrero Rial \\%\thanks{Use footnote for providing further information about author (webpage, alternative address)---\emph{not} for acknowledging funding agencies.} \\
+  Departamento de Computaci\'on\\
+  Facultad de Ciencias Exactas y Naturales\\
+  Unversidad de Buenos Aires \\
+  \texttt{ignaciolebrero@gmail.com} \\
+  751/13\\
+  %% examples of more authors
+   \And
+ Nestor Dario Ocles Garcia \\
+  Departamento de Computaci\'on\\
+  Facultad de Ciencias Exactas y Naturales\\
+  Unversidad de Buenos Aires \\
+  \texttt{dario.ocles@gmail.com} \\
+  633/15\\
+  \And
+  Matias Millassón\\
+  Departamento de Computaci\'on\\
+  Facultad de Ciencias Exactas y Naturales\\
+  Unversidad de Buenos Aires \\
+  \texttt{matiasmillasson@gmail.com} \\
+  LU 131/13\\
+  \And
+   Joaq   Joaquín Romera\\
+
+uín Romera\\
+   Departamento de Computaci\'on\\
+   Facultad de Ciencias Exactas y Naturales\\
+   Unversidad de Buenos Aires \\
+   \texttt{joakromera@gmail.com} \\
+   183/16\\
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+   En este trabajo presentamos un análisis sobre audios de distintos instrumentos musicales e intentamos caracterizarlos definiendo una noci\'on de \textbf{Identidad Instrumental} para más adelante intentar clasificarlos automáticamente según la misma. Para empezar recopilamos grabaciones de un conjunto de instrumentos con el objetivo tratar de entender sus propiedades individuales y tener un set para hacer los experimentos. De este set surgieron algunas clasificaciones básicas basadas en el material de construcción del instrumento (metales, maderas) y su forma de ejecución (percusión, con arco, viento), a su vez la fuente del sonido (cuerda, viento) y su medio de excitación (arco, boquilla) sugirieron otras categorías. Estas, en parte, determinarían las cualidades especctrales del sonido de cada instrumento. En segundo lugar decidimos centrar nuestro análisis en una serie de descriptores según la representación del sonido en su dominio espectral, temporal, y según su contenido armónico. Utilizamos estos descriptores para entrenar un modelo que permita predecir a qué familia pertenece cada muestra. Según el grado de éxito de este modelo podremos especular si estos descriptores son relevantes para describir un instrumento musical o la familia a la cual pertenece, o si son relevantes para una determinada familia y no para otra. Finalmente intentamos lograr la separación de instrumentos en grabaciones que incluyan dos ejecutando notas diferentes al mismo tiempo, utilizando la decomposición de componentes y activaciones de su espectograma.
+\end{abstract}
+
+
+% keywords can be removed
+\keywords{Transformada de Fourier \and Procesaminto de señales \and Instrumentos Musicales}
+
+\clearpage
+
+\input{Content/Introduccion.tex}
+\newpage
+\input{Content/Caracterizacion_de_un_instrumento.tex}
+\newpage
+\input{Content/Aislando_Instrumentos.tex}
+\newpage
+\input{Content/Conclusiones.tex}
+
+%\lipsum[4] See Section \ref{sec:headings}.
+
+%\subsection{Headings: second level}
+%\lipsum[5]
+%\begin{equation}
+%\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
+%\end{equation}
+
+%\subsubsection{Headings: third level}
+%\lipsum[6]
+
+%\paragraph{Paragraph}
+%\lipsum[7]
+%
+%\section{Examples of citations, figures, tables, references}
+%\label{sec:others}
+%\lipsum[8] \cite{kour2014real,kour2014fast} and see \cite{hadash2018estimate}.
+%
+%The documentation for \verb+natbib+ may be found at
+%\begin{center}
+  %\url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
+%\end{center}
+%Of note is the command \verb+\citet+, which produces citations
+%appropriate for use in inline text.  For example,
+%\begin{verbatim}
+   %\citet{hasselmo} investigated\dots
+%\end{verbatim}
+%produces
+%\begin{quote}
+  %Hasselmo, et al.\ (1995) investigated\dots
+%\end{quote}
+%
+%\begin{center}
+  %\url{https://www.ctan.org/pkg/booktabs}
+%\end{center}
+%
+%
+%\subsection{Figures}
+%\lipsum[10] 
+%See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
+%\lipsum[11] 
+%
+%\begin{figure}
+  %\centering
+  %\fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+  %\caption{Sample figure caption.}
+  %\label{fig:fig1}
+%\end{figure}
+%
+%\subsection{Tables}
+%\lipsum[12]
+%See awesome Table~\ref{tab:table}.
+%
+%\begin{table}
+ %\caption{Sample table title}
+  %\centering
+  %\begin{tabular}{lll}
+    %\toprule
+    %\multicolumn{2}{c}{Part}                   \\
+    %\cmidrule(r){1-2}
+    %Name     & Description     & Size ($\mu$m) \\
+    %\midrule
+    %Dendrite & Input terminal  & $\sim$100     \\
+    %Axon     & Output terminal & $\sim$10      \\
+    %Soma     & Cell body       & up to $10^6$  \\
+    %\bottomrule
+  %\end{tabular}
+  %\label{tab:table}
+%\end{table}
+%
+%\subsection{Lists}
+%\begin{itemize}
+%\item Lorem ipsum dolor sit amet
+%\item consectetur adipiscing elit. 
+%\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
+%\end{itemize}
+%
+%
+%\bibliographystyle{unsrt}  
+%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+%%%% and comment out the ``thebibliography'' section.
+%
+%
+%%%% Comment out this section when you \bibliography{references} is enabled.
+\begin{thebibliography}{1}
+%
+
+\bibitem{kour2014real}
+University of Iowa Musical Instrument Sample Database,
+\newblock http://theremin.music.uiowa.edu/index.html.
+
+\bibitem{kour2014real}
+Emmanouil Benetos, Margarita Kotti and Constantine Kotropoulos.
+\newblock Musical instrument classification using non-negative matrix factorization algorithms.
+\newblock In {\em Circuits and
+Systems, 2006. ISCAS 2006. Proceedings. 2006 IEEE.
+%\bibitem{kour2014fast}
+%George Kour and Raid Saabne.
+%\newblock Fast classification of handwritten on-line arabic characters.
+%\newblock In {\em Soft Computing and Pattern Recognition (SoCPaR), 2014 6th
+  %International Conference of}, pages 312--318. IEEE, 2014.
+%
+%\bibitem{hadash2018estimate}
+%Guy Hadash, Einat Kermany, Boaz Carmeli, Ofer Lavi, George Kour, and Alon
+  %Jacovi.
+%\newblock Estimate and replace: A novel approach to integrating deep neural
+  %networks with existing applications.
+%\newblock {\em arXiv preprint arXiv:1804.09028}, 2018.
+%
+%\end{thebibliography}
+%
+
+\end{document}
